@@ -1,8 +1,8 @@
 import requests
 import json
 
-url = "https://swapi.dev/api/people/1/"
-response = requests.get(url)
+
+
 
 characterList = []
 
@@ -10,33 +10,42 @@ for i in range(0, 84):
 	i=str(i)
 	url = "https://swapi.dev/api/people/"+i+"/"
 	response = requests.get(url)
-	response_json = response.json()
-	characterList.append(str(response_json))
-print(characterList)	
+	response_json = json.loads(response.text)
+	characterList.append(response_json)
+	print(i)
 
-response_python = json.loads(response.text)
+
+print(characterList[1]['name'])
+
+
 
 askCharacter = input("What character to you want to learn about? ")
 
+characterURL = ""
+characterResponse = ""
+characterResponse_json = ""
+specificCharacterList = []
 
-for i in range(0, 84):
-	url = "https://swapi.dev/api/people/"+str(i)+"/"
-	response = requests.get(url)
-	response_json = response.json()
-	if askCharacter == characterList[name][i]:
-		print("This character is in the database")
-	else: 
-		print("This character is not in the database")
-	break
+for j in range(1, 84):
+	try:
+		if askCharacter == characterList[j]['name']:
+			print("This character is in the database")
+			print(str(j))
+			characterURL = "https://swapi.dev/api/people/"+j+"/"
+			characterResponse = requests.get(characterURL)
+			characterResponse_json = json.loads(characterResponse.text)
+			specificCharacterList.append(characterResponse_json)
+	except:
+		print("")
 
-
+print(specificCharacterList)
 
 for d in response_json:
 	n = d.replace("_"," ")
 	print(n)
 
 
-descriptor = input("What do you want to know about "+response_json['name']+" out of all the descriptors above? ")
+descriptor = input("What do you want to know about "+characterResponse_json['name']+" out of all the descriptors above? ")
 
 descriptor = descriptor.replace("'"," ")
 

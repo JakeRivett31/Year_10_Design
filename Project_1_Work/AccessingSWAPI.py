@@ -3,9 +3,11 @@ import json
 import swapi
 
 
+url = "https://swapi.dev/api/people/1/"
+response = requests.get(url)
+response_json = response.json()
 
 
 
 
-for planet in swapi.get_all("planets").order_by("diameter"):
-    print(planet.name)
+
